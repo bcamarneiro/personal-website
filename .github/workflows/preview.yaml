@@ -16,10 +16,17 @@ jobs:
           # You may pin to the exact commit or the version.
           # uses: dcodeIO/setup-node-nvm@67e33081918632dcbba53dbc5484ee124e4dd8f4
         uses: dcodeIO/setup-node-nvm@v4
+        
+      - name: Read .nvmrc
+        # You may pin to the exact commit or the version.
+        # uses: browniebroke/read-nvmrc-action@377268bc49bb9ea619bcf2e504c85805e6bab267
+        uses: browniebroke/read-nvmrc-action@v1
 
       - run: yarn install
+      
       # This triggers `gatsby build` script in "package.json"
       - run: yarn run build
+      
       # 4. Deploy the gatsby build to Netlify
       - uses: netlify/actions/cli@master
         env:
