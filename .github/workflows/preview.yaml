@@ -1,9 +1,7 @@
 name: Build and Deploy to Gatsby every two hours
 
 on:
-  # 1. Trigger the workflow every 2 hours
-  schedule:
-    - cron: "0 */2 * * *"
+  push
 
 jobs:
   build:
@@ -13,10 +11,12 @@ jobs:
     steps:
       # Check out the current repository code
       - uses: actions/checkout@v1
-      # 3. https://github.com/actions/setup-node#usage
-      - name: Set the correct Node version using nvm
-        shell: bash -l {0} 
-        run: nvm install
+      
+      - name: Set up node using nvm
+          # You may pin to the exact commit or the version.
+          # uses: dcodeIO/setup-node-nvm@67e33081918632dcbba53dbc5484ee124e4dd8f4
+        uses: dcodeIO/setup-node-nvm@v4
+
       - run: yarn install
       # This triggers `gatsby build` script in "package.json"
       - run: yarn run build
