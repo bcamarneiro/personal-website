@@ -1,7 +1,7 @@
 name: Build and Deploy to Gatsby to preview
 
 on:
-  pull_request
+  push
 
 jobs:
   prepare:
