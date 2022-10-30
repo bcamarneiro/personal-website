@@ -1,8 +1,8 @@
-name: Build and Deploy to Gatsby to production
+name: Build and Deploy to Preview
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build:
