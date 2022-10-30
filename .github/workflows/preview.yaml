@@ -16,18 +16,7 @@ jobs:
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: yarn install
-      
-  build:
-    needs: prepare
-    runs-on: ubuntu-latest
-
-    steps:
       - run: yarn run build
-  
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
