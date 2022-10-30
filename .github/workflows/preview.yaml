@@ -2,7 +2,7 @@ name: Build and Deploy to Gatsby to production
 on:
   push:
     branches:
-      - production
+      - master
 
 jobs:
   build:
