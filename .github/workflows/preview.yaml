@@ -4,34 +4,35 @@ on:
   push
 
 jobs:
-  build:
-    # 2. Using the latest Ubuntu image
+  prepare:
+    needs: build
     runs-on: ubuntu-latest
-
     steps:
-      # Check out the current repository code
       - uses: actions/checkout@v1
-      
       - name: Read .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
-
       - name: Use Node.js (.nvmrc)
         uses: actions/setup-node@v1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
-
       - run: yarn install
       
-      # This triggers `gatsby build` script in "package.json"
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    steps:
       - run: yarn run build
-      
-      # 4. Deploy the gatsby build to Netlify
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          # 5. "gatsby build" creates "public" folder, which is what we are deploying
           args: deploy --dir=public --prod
           secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
