@@ -9,29 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      
       - name: Read .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
+        
       - name: Use Node.js (.nvmrc)
         uses: actions/setup-node@v1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
           
       - run: yarn install
+      
       - run: yarn run build
-      
-      
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './dist'
-          production-branch: master
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
+          publish-dir: './public'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
+
+
